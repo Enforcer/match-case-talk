@@ -1,0 +1,18 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!include DEVICONS/python.puml
+
+
+AddRelTag("rel", $textColor="white", $lineColor="white")
+
+ContainerQueue(broker, "Queue")
+Container(consumer, "Consumer", "Python", $sprite="python")
+Rel_L(consumer, broker, "consumes", $tags="rel")
+
+UpdateElementStyle("container", $bgColor="#bbb", $borderColor="#aaa")
+
+scale 3
+skinparam backgroundColor transparent
+@enduml

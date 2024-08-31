@@ -1,0 +1,3 @@
+@event_handler.register
+def handle_account_created(event: AccountCreated) -> None:
+    ...
