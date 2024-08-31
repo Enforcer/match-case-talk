@@ -1,10 +1,7 @@
 from models import *
-from pydantic import TypeAdapter, Discriminator, Tag
-from typing import Any, Annotated, Union
+from pydantic import TypeAdapter, Discriminator, Tag, ValidationError
+from typing import Annotated, Union, assert_never
 
-supported_model = (
-    AccountCreated | AccountDeleted | AccountUpdated | Any
-)
 adapter = TypeAdapter(
     Annotated[
         Union[
@@ -19,7 +16,12 @@ adapter = TypeAdapter(
 
 def handle(payload: dict) -> None:
     # HAMMER TIME! 🔨
-    event = adapter.validate_python(payload)  # Would also have to handle unknown differently
+    try:
+        event = adapter.validate_python(payload)
+    except ValidationError:
+        # unhandled message
+        print("Omg, what is this?!")
+        return
 
     match event:
         case AccountCreated():
@@ -31,10 +33,10 @@ def handle(payload: dict) -> None:
         case AccountUpdated(new_status="trial"):
             ...
         case _:
-            print("Omg, what is this?!")
+            assert_never("This should never happen")
 
 
 if __name__ == "__main__":
     from messages import c, d, u1, u2, mal
-    for mes in c, d, u1, u2:
+    for mes in c, d, u1, u2, mal:
         handle(mes)
