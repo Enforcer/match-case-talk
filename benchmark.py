@@ -1,7 +1,7 @@
 import timeit
 
 from ifs_tasks_escalated import handle as ifs_nested
-from match_8_models import handle as match_pydantic_models_with_any
+from match_8_models_type_adapter import handle as match_pydantic_models_with_any
 from match_5 import handle as match_on_dicts
 
 data = {"type": "AccountUpdated", "id": "fede79b2", "old_status": "paid", "new_status": "trial"}
